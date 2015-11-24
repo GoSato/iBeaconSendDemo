@@ -1,25 +1,47 @@
 //
 //  ViewController.swift
-//  iBeaconSendDemo
-//
-//  Created by Go Sato on 2015/11/24.
-//  Copyright © 2015年 go. All rights reserved.
+//  CoreLocation002
 //
 
 import UIKit
+import CoreLocation
+import CoreBluetooth
 
-class ViewController: UIViewController {
-
+class ViewController: UIViewController, CBPeripheralManagerDelegate {
+    
+    // LocationManager.
+    var myPheripheralManager:CBPeripheralManager!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        // PeripheralManagerを定義.
+        myPheripheralManager = CBPeripheralManager(delegate: self, queue: nil)
+        
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager!) {
+        
+        // iBeaconのUUID.
+        let myProximityUUID = NSUUID(UUIDString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D")
+        
+        // iBeaconのIdentifier.
+        let myIdentifier = "akabeacon"
+        
+        // Major.
+        let myMajor : CLBeaconMajorValue = 1
+        
+        // Minor.
+        let myMinor : CLBeaconMinorValue = 2
+        
+        // BeaconRegionを定義.
+        let myBeaconRegion = CLBeaconRegion(proximityUUID: myProximityUUID!, major: myMajor, minor: myMinor, identifier: myIdentifier)
+        
+        // Advertisingのフォーマットを作成.
+        let myBeaconPeripheralData = NSDictionary(dictionary: myBeaconRegion.peripheralDataWithMeasuredPower(nil))
+        
+        
+        // Advertisingを発信.
+        myPheripheralManager.startAdvertising(myBeaconPeripheralData as! [String : AnyObject])
     }
-
-
 }
-
