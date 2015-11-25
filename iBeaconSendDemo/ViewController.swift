@@ -20,7 +20,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         
     }
     
-    func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager!) {
+    func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager) {
         
         // iBeaconのUUID.
         let myProximityUUID = NSUUID(UUIDString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D")
@@ -42,6 +42,6 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         
         
         // Advertisingを発信.
-        myPheripheralManager.startAdvertising(myBeaconPeripheralData as! [String : AnyObject])
+        myPheripheralManager.startAdvertising(myBeaconPeripheralData as? [String : AnyObject])
     }
 }
